@@ -1,4 +1,7 @@
-.services-page { background: var(--bg-light); min-height: 100vh; padding-top: calc(var(--header-h) + 40px); }
+.services-page {
+  background: linear-gradient(180deg, #f4f7fb 0%, #eef4ff 50%, #f4f7fb 100%);
+  min-height: 100vh;
+}
 
 .services-list {
   display: flex;
@@ -17,16 +20,34 @@
   border-radius: 16px;
   padding: 28px 32px;
   text-decoration: none;
-  transition: all 0.3s;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.services-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 4px;
+  height: 60%;
+  background: var(--accent-teal-gradient);
+  border-radius: 0 4px 4px 0;
+  transition: transform var(--transition);
+}
+
+.services-item:hover::before {
+  transform: translateY(-50%) scaleY(1);
 }
 
 .services-item:hover {
   box-shadow: var(--shadow-lg);
   transform: translateX(6px);
-  border-color: var(--primary);
+  border-color: transparent;
 }
 
-.services-item-icon { font-size: 40px; flex-shrink: 0; }
+.services-item-icon { font-size: 42px; flex-shrink: 0; }
 
 .services-item-content { flex: 1; }
 
@@ -54,9 +75,10 @@
   font-size: 12px;
   color: var(--primary);
   background: var(--primary-surface);
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 100px;
   font-weight: 500;
+  border: 1px solid rgba(16,144,240,0.08);
 }
 
 .services-item-arrow {
@@ -64,24 +86,25 @@
   color: var(--primary);
   font-weight: 600;
   flex-shrink: 0;
-  transition: transform 0.2s;
+  transition: transform var(--transition);
 }
 
 .services-item:hover .services-item-arrow {
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 
 .services-cta {
   text-align: center;
   margin-top: 64px;
-  padding: 48px;
+  padding: 56px 48px;
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .services-cta h3 {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 8px;
@@ -90,7 +113,7 @@
 .services-cta p {
   font-size: 15px;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 @media (max-width: 768px) {
@@ -99,6 +122,8 @@
     text-align: center;
     padding: 24px 20px;
   }
+  .services-item::before { display: none; }
   .services-item-features { justify-content: center; }
   .services-cta { padding: 32px 20px; }
+  .services-cta h3 { font-size: 20px; }
 }

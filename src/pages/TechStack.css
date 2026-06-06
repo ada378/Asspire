@@ -1,6 +1,6 @@
-.tech-stack-page { min-height: 100vh; padding-top: calc(var(--header-h) + 40px); background: var(--dark-navy); }
+.tech-stack-page { min-height: 100vh; background: var(--dark-navy); }
 .tech-stack-page .section-header h2 { color: #fff; }
-.tech-stack-page .section-header p { color: var(--text-on-dark); opacity: 0.6; }
+.tech-stack-page .section-header p { color: var(--text-on-dark); opacity: 0.5; }
 
 .ts-grid {
   display: grid;
@@ -13,34 +13,48 @@
   background: var(--dark-card);
   border: 1px solid var(--dark-border);
   border-radius: 16px;
-  padding: 36px 24px;
+  padding: 40px 24px;
   text-align: center;
-  transition: all 0.3s;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
 }
+
+.ts-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(16,144,240,0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.ts-card:hover::before { opacity: 1; }
 
 .ts-card:hover {
   transform: translateY(-6px);
-  border-color: var(--primary);
-  box-shadow: 0 8px 32px rgba(16,144,240,0.08);
+  border-color: rgba(16,144,240,0.3);
+  box-shadow: 0 8px 40px rgba(16,144,240,0.06);
 }
 
 .ts-letter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: var(--primary-gradient);
+  background: var(--accent-teal-gradient);
   color: #fff;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(16,144,240,0.2);
 }
 
 .ts-card h3 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.ts-card p { font-size: 14px; color: var(--text-on-dark); opacity: 0.5; margin-bottom: 12px; }
-.ts-detail { font-size: 13px; color: var(--text-on-dark); opacity: 0.4; line-height: 1.6; display: block; }
+.ts-card p { font-size: 14px; color: var(--text-on-dark); opacity: 0.45; margin-bottom: 12px; }
+.ts-detail { font-size: 13px; color: var(--text-on-dark); opacity: 0.35; line-height: 1.6; display: block; }
 
 .ts-section { margin-bottom: 48px; }
 .ts-section h3 { font-size: 20px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 24px; }
@@ -53,21 +67,23 @@
 }
 
 .ts-chip {
-  padding: 8px 22px;
+  padding: 8px 24px;
   border-radius: 100px;
   background: var(--dark-card);
   border: 1px solid var(--dark-border);
   color: var(--text-on-dark);
-  opacity: 0.6;
+  opacity: 0.5;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: all var(--transition);
 }
 
 .ts-chip:hover {
   border-color: var(--primary);
   opacity: 1;
   color: var(--primary);
+  background: rgba(16,144,240,0.06);
+  transform: translateY(-2px);
 }
 
 .ts-code-section h3 {
@@ -79,12 +95,13 @@
 }
 
 .ts-code-block {
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.35);
   border: 1px solid var(--dark-border);
   border-radius: 14px;
   overflow: hidden;
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
 }
 
 .ts-code-header {
@@ -92,19 +109,19 @@
   padding: 12px 20px;
   font-size: 13px;
   color: var(--text-on-dark);
-  opacity: 0.5;
+  opacity: 0.4;
   border-bottom: 1px solid var(--dark-border);
   font-family: var(--font);
 }
 
 .ts-code-block pre {
-  padding: 20px;
+  padding: 24px 20px;
   font-size: 13px;
   line-height: 1.7;
   color: var(--text-on-dark);
-  opacity: 0.7;
+  opacity: 0.65;
   overflow-x: auto;
-  font-family: var(--font);
+  font-family: 'Fira Code', 'JetBrains Mono', var(--font);
 }
 
 @media (max-width: 1024px) {
