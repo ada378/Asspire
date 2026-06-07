@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { FaEnvelope, FaBriefcase, FaTwitter, FaLink } from 'react-icons/fa'
 import './Footer.css'
 import logoImg from '../assets/logoassspire.jpeg'
 
@@ -9,10 +10,11 @@ export default function Footer() {
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
             <img src={logoImg} alt="Aspire Mediatech" className="footer-logo-img" />
+            <span className="footer-brand-name">Aspire Mediatech</span>
           </Link>
           <p>Full-stack MERN development agency crafting production-grade web applications with security-first approach and scalable cloud-native solutions.</p>
           <div className="footer-social">
-            <span>📧</span><span>💼</span><span>🐦</span><span>🔗</span>
+            <span><FaEnvelope /></span><span><FaBriefcase /></span><span><FaTwitter /></span><span><FaLink /></span>
           </div>
         </div>
 

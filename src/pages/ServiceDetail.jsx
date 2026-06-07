@@ -1,10 +1,11 @@
 import { Link, useParams } from 'react-router-dom'
+import { FaGlobe, FaMobileAlt, FaCogs, FaCloud, FaPaintBrush, FaChartLine } from 'react-icons/fa'
 import './ServiceDetail.css'
 
 const serviceData = {
   'web-development': {
     title: 'Web Development',
-    icon: '🌐',
+    icon: FaGlobe,
     tagline: 'Full-stack MERN applications',
     description: 'We build production-grade web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js). Our development process follows industry best practices including component-based architecture, state management with Redux Toolkit, responsive design with Tailwind CSS, and comprehensive testing with Jest and Cypress.',
     features: [
@@ -20,7 +21,7 @@ const serviceData = {
   },
   'mobile-apps': {
     title: 'Mobile Apps',
-    icon: '📱',
+    icon: FaMobileAlt,
     tagline: 'Cross-platform with React Native',
     description: 'We develop high-performance cross-platform mobile applications using React Native, delivering native-like experiences on both iOS and Android from a single codebase. Our apps are built with performance, scalability, and user experience in mind.',
     features: [
@@ -36,7 +37,7 @@ const serviceData = {
   },
   'api-development': {
     title: 'API Development',
-    icon: '⚙️',
+    icon: FaCogs,
     tagline: 'REST & GraphQL APIs',
     description: 'We design and build robust, scalable APIs that power your applications. Whether you need RESTful endpoints or GraphQL schemas, we ensure your API is secure, well-documented, and performant.',
     features: [
@@ -52,7 +53,7 @@ const serviceData = {
   },
   'cloud-devops': {
     title: 'Cloud & DevOps',
-    icon: '☁️',
+    icon: FaCloud,
     tagline: 'AWS, Docker, CI/CD',
     description: 'We provide end-to-end cloud infrastructure and DevOps services to ensure your applications are reliable, scalable, and efficiently deployed. From containerization to continuous deployment, we handle the infrastructure so you can focus on building.',
     features: [
@@ -68,7 +69,7 @@ const serviceData = {
   },
   'ui-ux-design': {
     title: 'UI/UX Design',
-    icon: '🎨',
+    icon: FaPaintBrush,
     tagline: 'Figma prototypes & design systems',
     description: 'We create beautiful, user-centered designs that drive engagement and conversions. Our design process starts with research and wireframes, evolves into interactive Figma prototypes, and culminates in a comprehensive design system.',
     features: [
@@ -84,7 +85,7 @@ const serviceData = {
   },
   'digital-marketing': {
     title: 'Digital Marketing',
-    icon: '📈',
+    icon: FaChartLine,
     tagline: 'SEO & Analytics',
     description: 'We help you reach your target audience and grow your online presence through data-driven digital marketing strategies. From search engine optimization to analytics, we ensure your business gets the visibility it deserves.',
     features: [
@@ -103,6 +104,7 @@ const serviceData = {
 export default function ServiceDetail() {
   const { serviceId } = useParams()
   const service = serviceData[serviceId]
+  const Icon = service?.icon
 
   if (!service) {
     return (
@@ -122,7 +124,7 @@ export default function ServiceDetail() {
         <div className="sd-header">
           <Link to="/services" className="sd-back">← Back to Services</Link>
           <div className="sd-title-row">
-            <span className="sd-icon">{service.icon}</span>
+            <span className="sd-icon">{Icon && <Icon />}</span>
             <div>
               <span className="section-tag">{service.tagline}</span>
               <h2 className="sd-title">{service.title}</h2>

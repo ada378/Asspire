@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { FaGlobe, FaMobileAlt, FaCogs, FaCloud, FaPaintBrush, FaChartLine } from 'react-icons/fa'
 import './Header.css'
 import logoImg from '../assets/logoassspire.jpeg'
 
 const services = [
-  { id: 'web-development', label: 'Web Development', desc: 'Full-stack MERN apps' },
-  { id: 'mobile-apps', label: 'Mobile Apps', desc: 'React Native' },
-  { id: 'api-development', label: 'API Development', desc: 'REST & GraphQL' },
-  { id: 'cloud-devops', label: 'Cloud & DevOps', desc: 'AWS, Docker, CI/CD' },
-  { id: 'ui-ux-design', label: 'UI/UX Design', desc: 'Figma prototypes' },
-  { id: 'digital-marketing', label: 'Digital Marketing', desc: 'SEO & Analytics' },
+  { id: 'web-development', label: 'Web Development', desc: 'Full-stack MERN apps', icon: FaGlobe },
+  { id: 'mobile-apps', label: 'Mobile Apps', desc: 'React Native', icon: FaMobileAlt },
+  { id: 'api-development', label: 'API Development', desc: 'REST & GraphQL', icon: FaCogs },
+  { id: 'cloud-devops', label: 'Cloud & DevOps', desc: 'AWS, Docker, CI/CD', icon: FaCloud },
+  { id: 'ui-ux-design', label: 'UI/UX Design', desc: 'Figma prototypes', icon: FaPaintBrush },
+  { id: 'digital-marketing', label: 'Digital Marketing', desc: 'SEO & Analytics', icon: FaChartLine },
 ]
 
 export default function Header() {
@@ -24,6 +25,7 @@ export default function Header() {
       <div className="container header-inner">
         <Link to="/" className="header-logo">
           <img src={logoImg} alt="Aspire Mediatech" className="header-logo-img" />
+          <span className="header-brand-name">Aspire Mediatech</span>
         </Link>
 
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
@@ -46,12 +48,18 @@ export default function Header() {
               Services <span className="dropdown-arrow">▾</span>
             </Link>
             <div className={`dropdown-menu ${dropdownOpen ? 'dropdown-open' : ''}`}>
-              {services.map(s => (
-                <Link key={s.id} to={`/services/${s.id}`} className="dropdown-item" onClick={() => { setMenuOpen(false); setDropdownOpen(false) }}>
-                  <span className="dropdown-item-label">{s.label}</span>
-                  <span className="dropdown-item-desc">{s.desc}</span>
-                </Link>
-              ))}
+              {services.map(s => {
+                const Icon = s.icon
+                return (
+                  <Link key={s.id} to={`/services/${s.id}`} className="dropdown-item" onClick={() => { setMenuOpen(false); setDropdownOpen(false) }}>
+                    <span className="dropdown-item-icon"><Icon /></span>
+                    <div>
+                      <span className="dropdown-item-label">{s.label}</span>
+                      <span className="dropdown-item-desc">{s.desc}</span>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
