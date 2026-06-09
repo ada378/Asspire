@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Aspire Mediatech</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-surface: rgba(37,99,235,0.08);
+  --dark-navy: #0a0a1a;
+  --dark-surface: #0f0f2a;
+  --dark-card: rgba(255,255,255,0.03);
+  --dark-border: rgba(255,255,255,0.08);
+  --text-on-dark: #cbd5e1;
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--dark-navy);
+  color: var(--text-on-dark);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.hidden { display: none !important; }
+
+/* Login */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+.login-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(37,99,235,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(124,58,237,0.06) 0%, transparent 50%);
+}
+.login-box {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.login-box h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.login-box p {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.4;
+  margin-bottom: 32px;
+}
+.login-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  color: #ef4444;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  display: none;
+}
+.login-error.show { display: block; }
+
+/* Dashboard */
+.dashboard { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 240px;
+  background: var(--dark-surface);
+  border-right: 1px solid var(--dark-border);
+  padding: 24px 16px;
+  flex-shrink: 0;
+}
+.sidebar-brand {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 32px;
+  padding: 0 12px;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: var(--text-on-dark);
+  opacity: 0.5;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.sidebar-nav a:hover, .sidebar-nav a.active { opacity: 1; background: rgba(255,255,255,0.04); color: #fff; }
+.sidebar-nav a.logout { margin-top: auto; color: #ef4444; opacity: 0.6; }
+.sidebar-nav a.logout:hover { opacity: 1; background: rgba(239,68,68,0.08); }
+
+.main { flex: 1; padding: 32px; overflow-x: hidden; }
+.main h2 { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 24px; }
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.stat-card {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+}
+.stat-card h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.4; margin-bottom: 8px; }
+.stat-card .num { font-size: 32px; font-weight: 800; color: #fff; }
+.stat-card .num.blue { color: #2563eb; }
+.stat-card .num.green { color: #10b981; }
+.stat-card .num.amber { color: #f59e0b; }
+.stat-card .num.purple { color: #7c3aed; }
+
+/* Table */
+.table-wrapper {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--dark-border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.table-header h3 { font-size: 16px; font-weight: 700; color: #fff; }
+.filter-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filter-group select, .filter-group input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.filter-group select option { background: var(--dark-surface); color: #fff; }
+.filter-group input::placeholder { opacity: 0.3; color: var(--text-on-dark); }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left;
+  padding: 14px 24px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.3;
+  border-bottom: 1px solid var(--dark-border);
+}
+tbody td {
+  padding: 14px 24px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody tr.unread { background: rgba(37,99,235,0.04); }
+tbody tr.unread td:first-child { border-left: 2px solid var(--primary); }
+
+.status-badge {
+  display: inline-flex;
+  padding: 3px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.status-badge.new { background: rgba(37,99,235,0.15); color: #2563eb; }
+.status-badge.read { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.status-badge.replied { background: rgba(16,185,129,0.15); color: #10b981; }
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--dark-border);
+  background: transparent;
+  color: var(--text-on-dark);
+  opacity: 0.5;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.action-btn:hover { opacity: 1; border-color: var(--primary); color: var(--primary); }
+.action-btn.danger:hover { border-color: #ef4444; color: #ef4444; }
+
+/* Detail modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+.modal {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--dark-border);
+}
+.modal-header h3 { font-size: 18px; font-weight: 700; color: #fff; }
+.modal-close {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  opacity: 0.4;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+.modal-close:hover { opacity: 1; background: rgba(255,255,255,0.08); }
+.modal-body { padding: 28px; }
+.modal-body .field { margin-bottom: 20px; }
+.modal-body .field:last-child { margin-bottom: 0; }
+.modal-body .field label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.3; margin-bottom: 6px; }
+.modal-body .field .value { font-size: 15px; color: #fff; line-height: 1.6; }
+.modal-body textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  margin-top: 8px;
+}
+.modal-body textarea:focus { border-color: var(--primary); }
+.modal-footer {
+  display: flex;
+  gap: 8px;
+  padding: 20px 28px;
+  border-top: 1px solid var(--dark-border);
+  justify-content: flex-end;
+}
+.btn {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-ghost { background: transparent; color: var(--text-on-dark); border: 1px solid var(--dark-border); }
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); }
+.btn-success { background: #10b981; color: #fff; }
+.btn-success:hover { background: #059669; }
+.btn-danger { background: #ef4444; color: #fff; }
+.btn-danger:hover { background: #dc2626; }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--dark-border);
+}
+.pagination button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--dark-border);
+  background: transparent;
+  color: var(--text-on-dark);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.pagination button:hover { border-color: var(--primary); color: var(--primary); }
+.pagination button:disabled { opacity: 0.3; cursor: default; }
+.pagination span { font-size: 13px; opacity: 0.4; }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  opacity: 0.3;
+}
+.empty-state p { font-size: 15px; }
+
+/* Recent inquiries on dashboard */
+.recent-list { margin-top: 24px; }
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.recent-item:last-child { border-bottom: none; }
+.recent-item .name { font-weight: 600; color: #fff; font-size: 14px; }
+.recent-item .email { font-size: 13px; opacity: 0.4; }
+.recent-item .date { font-size: 12px; opacity: 0.3; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar { width: 64px; padding: 16px 8px; }
+  .sidebar-brand { font-size: 14px; padding: 0; text-align: center; }
+  .sidebar-nav a { justify-content: center; padding: 10px; font-size: 0; gap: 0; }
+  .main { padding: 20px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .table-wrapper { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<div id="loginPage" class="login-page">
+  <div class="login-box">
+    <h1>Admin Login</h1>
+    <p>Aspire Mediatech Dashboard</p>
+    <div id="loginError" class="login-error">Invalid credentials</div>
+    <form id="loginForm">
+      <div style="margin-bottom: 16px;">
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0.3;margin-bottom:6px;">Email</label>
+        <input type="email" id="loginEmail" value="admin@aspiremediatech.com" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--dark-border);border-radius:10px;padding:12px 16px;color:#fff;font-size:14px;font-family:inherit;outline:none;" />
+      </div>
+      <div style="margin-bottom: 24px;">
+        <label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0.3;margin-bottom:6px;">Password</label>
+        <input type="password" id="loginPassword" required style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--dark-border);border-radius:10px;padding:12px 16px;color:#fff;font-size:14px;font-family:inherit;outline:none;" />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<div id="dashboard" class="dashboard hidden">
+  <aside class="sidebar">
+    <div class="sidebar-brand">Aspire Admin</div>
+    <nav class="sidebar-nav">
+      <a href="#" data-view="dashboard" class="active">📊 Dashboard</a>
+      <a href="#" data-view="inquiries">📩 Inquiries</a>
+      <a href="#" id="logoutBtn" class="logout">🚪 Logout</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div id="dashboardView">
+      <h2>Dashboard</h2>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><h3>Total Inquiries</h3><div class="num blue" id="statTotal">—</div></div>
+        <div class="stat-card"><h3>New</h3><div class="num amber" id="statNew">—</div></div>
+        <div class="stat-card"><h3>Read</h3><div class="num purple" id="statRead">—</div></div>
+        <div class="stat-card"><h3>Replied</h3><div class="num green" id="statReplied">—</div></div>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-header"><h3>Recent Inquiries</h3></div>
+        <div id="recentInquiries" class="recent-list"><p class="empty-state">Loading...</p></div>
+      </div>
+    </div>
+
+    <div id="inquiriesView" class="hidden">
+      <h2>Inquiries</h2>
+      <div class="table-wrapper">
+        <div class="table-header">
+          <h3>All Contact Submissions</h3>
+          <div class="filter-group">
+            <select id="statusFilter"><option value="">All Status</option><option value="new">New</option><option value="read">Read</option><option value="replied">Replied</option></select>
+            <input type="text" id="searchInput" placeholder="Search name or email..." />
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Service</th><th>Date</th><th>Status</th><th></th></tr></thead>
+          <tbody id="inquiriesBody"></tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Detail Modal -->
+<div id="detailModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Contact Details</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin + '/api'
+let token = localStorage.getItem('adminToken') || ''
+let currentPage = 1
+let currentContactId = null
+
+// Check auth
+if (token) { showDashboard() }
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email = document.getElementById('loginEmail').value
+  const password = document.getElementById('loginPassword').value
+  const errorEl = document.getElementById('loginError')
+  errorEl.classList.remove('show')
+
+  try {
+    const res = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+    const data = await res.json()
+    if (!res.ok) { errorEl.textContent = data.error || 'Login failed'; errorEl.classList.add('show'); return }
+    token = data.token
+    localStorage.setItem('adminToken', token)
+    showDashboard()
+  } catch {
+    errorEl.textContent = 'Server error. Is the backend running?'
+    errorEl.classList.add('show')
+  }
+})
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  token = ''
+  localStorage.removeItem('adminToken')
+  document.getElementById('loginPage').classList.remove('hidden')
+  document.getElementById('dashboard').classList.add('hidden')
+})
+
+document.querySelectorAll('.sidebar-nav a[data-view]').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-nav a').forEach(x => x.classList.remove('active'))
+    a.classList.add('active')
+    document.getElementById('dashboardView').classList.add('hidden')
+    document.getElementById('inquiriesView').classList.add('hidden')
+    document.getElementById(a.dataset.view + 'View').classList.remove('hidden')
+    if (a.dataset.view === 'inquiries') loadInquiries()
+    if (a.dataset.view === 'dashboard') loadDashboard()
+  })
+})
+
+document.getElementById('statusFilter').addEventListener('change', () => { currentPage = 1; loadInquiries() })
+document.getElementById('searchInput').addEventListener('input', debounce(() => { currentPage = 1; loadInquiries() }, 300))
+
+function debounce(fn, ms) { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms) } }
+
+function showDashboard() {
+  document.getElementById('loginPage').classList.add('hidden')
+  document.getElementById('dashboard').classList.remove('hidden')
+  loadDashboard()
+}
+
+async function loadDashboard() {
+  try {
+    const res = await fetch(API + '/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } })
+    if (res.status === 401) { token = ''; localStorage.removeItem('adminToken'); location.reload(); return }
+    const data = await res.json()
+    document.getElementById('statTotal').textContent = data.total
+    document.getElementById('statNew').textContent = data.new
+    document.getElementById('statRead').textContent = data.read
+    document.getElementById('statReplied').textContent = data.replied
+
+    const container = document.getElementById('recentInquiries')
+    if (!data.recent.length) { container.innerHTML = '<p class="empty-state">No inquiries yet</p>'; return }
+    container.innerHTML = data.recent.map(c => `
+      <div class="recent-item" style="cursor:pointer" onclick="viewContact('${c._id}')">
+        <div><div class="name">${esc(c.firstName)} ${esc(c.lastName)}</div><div class="email">${esc(c.email)}</div></div>
+        <div style="text-align:right"><span class="status-badge ${c.status}">${c.status}</span><div class="date">${new Date(c.createdAt).toLocaleDateString()}</div></div>
+      </div>
+    `).join('')
+  } catch { /* ignore */ }
+}
+
+async function loadInquiries() {
+  const status = document.getElementById('statusFilter').value
+  const search = document.getElementById('searchInput').value
+  try {
+    const res = await fetch(`${API}/admin/contacts?page=${currentPage}&status=${status}&search=${encodeURIComponent(search)}`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    if (res.status === 401) { token = ''; localStorage.removeItem('adminToken'); location.reload(); return }
+    const data = await res.json()
+    const tbody = document.getElementById('inquiriesBody')
+
+    if (!data.contacts.length) {
+      tbody.innerHTML = '<tr><td colspan="6"><p class="empty-state">No inquiries found</p></td></tr>'
+    } else {
+      tbody.innerHTML = data.contacts.map(c => `
+        <tr class="${c.status === 'new' ? 'unread' : ''}" onclick="viewContact('${c._id}')" style="cursor:pointer">
+          <td style="font-weight:600;color:#fff">${esc(c.firstName)} ${esc(c.lastName)}</td>
+          <td style="opacity:0.6">${esc(c.email)}</td>
+          <td>${esc(c.service)}</td>
+          <td style="opacity:0.4;font-size:13px">${new Date(c.createdAt).toLocaleDateString()}</td>
+          <td><span class="status-badge ${c.status}">${c.status}</span></td>
+          <td><button class="action-btn" onclick="event.stopPropagation();viewContact('${c._id}')">View</button></td>
+        </tr>
+      `).join('')
+    }
+
+    const pagination = document.getElementById('pagination')
+    if (data.pages <= 1) { pagination.innerHTML = ''; return }
+    pagination.innerHTML = `
+      <button onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>← Prev</button>
+      <span>Page ${data.page} of ${data.pages}</span>
+      <button onclick="goPage(${currentPage + 1})" ${currentPage >= data.pages ? 'disabled' : ''}>Next →</button>
+    `
+  } catch { /* ignore */ }
+}
+
+function goPage(p) { currentPage = p; loadInquiries() }
+
+async function viewContact(id) {
+  try {
+    const res = await fetch(API + '/admin/contacts/' + id, { headers: { 'Authorization': 'Bearer ' + token } })
+    const c = await res.json()
+    currentContactId = c._id
+
+    document.getElementById('modalTitle').textContent = c.firstName + ' ' + c.lastName
+    document.getElementById('modalBody').innerHTML = `
+      <div class="field"><label>Name</label><div class="value">${esc(c.firstName)} ${esc(c.lastName)}</div></div>
+      <div class="field"><label>Email</label><div class="value">${esc(c.email)}</div></div>
+      <div class="field"><label>Phone</label><div class="value">${c.phone || '—'}</div></div>
+      <div class="field"><label>Service</label><div class="value">${esc(c.service)}</div></div>
+      <div class="field"><label>Status</label><div class="value"><span class="status-badge ${c.status}">${c.status}</span></div></div>
+      <div class="field"><label>Date</label><div class="value">${new Date(c.createdAt).toLocaleString()}</div></div>
+      <div class="field"><label>Details</label><div class="value">${esc(c.details)}</div></div>
+      <div class="field"><label>Notes (internal)</label><textarea id="notesField" rows="3">${esc(c.notes || '')}</textarea></div>
+    `
+
+    document.getElementById('modalFooter').innerHTML = `
+      ${c.status !== 'replied' ? `<button class="btn btn-success" onclick="updateStatus('${c._id}','replied')">✓ Mark Replied</button>` : ''}
+      ${c.status === 'new' ? `<button class="btn btn-ghost" onclick="updateStatus('${c._id}','read')">Mark Read</button>` : ''}
+      <button class="btn btn-danger" onclick="deleteContact('${c._id}')">Delete</button>
+      <button class="btn btn-ghost" onclick="saveNotes()">Save Notes</button>
+    `
+
+    document.getElementById('detailModal').classList.remove('hidden')
+    if (c.status === 'new') updateStatus(c._id, 'read', true)
+  } catch { /* ignore */ }
+}
+
+async function updateStatus(id, status, silent = false) {
+  try {
+    await fetch(API + '/admin/contacts/' + id, {
+      method: 'PATCH',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    })
+    if (!silent) { closeModal(); loadInquiries(); loadDashboard() }
+  } catch { /* ignore */ }
+}
+
+async function saveNotes() {
+  if (!currentContactId) return
+  const notes = document.getElementById('notesField').value
+  try {
+    await fetch(API + '/admin/contacts/' + currentContactId, {
+      method: 'PATCH',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes })
+    })
+    alert('Notes saved!')
+  } catch { alert('Failed to save notes') }
+}
+
+async function deleteContact(id) {
+  if (!confirm('Delete this inquiry?')) return
+  try {
+    await fetch(API + '/admin/contacts/' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    closeModal(); loadInquiries(); loadDashboard()
+  } catch { alert('Failed to delete') }
+}
+
+function closeModal() {
+  document.getElementById('detailModal').classList.add('hidden')
+  currentContactId = null
+}
+
+function esc(s) {
+  const div = document.createElement('div')
+  div.textContent = s || ''
+  return div.innerHTML
+}
+</script>
+</body>
+</html>
