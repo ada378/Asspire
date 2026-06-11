@@ -7,6 +7,8 @@ import ServiceDetail from './pages/ServiceDetail'
 import TechStack from './pages/TechStack'
 import Contact from './pages/Contact'
 import Admin from './pages/Admin'
+import Reviews from './pages/Reviews'
+import Founder from './pages/Founder'
 import './App.css'
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
           <Route path="/tech-stack" element={<TechStack />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/founder" element={<Founder />} />
         </Routes>
       </main>
       <Footer />

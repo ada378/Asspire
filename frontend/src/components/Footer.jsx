@@ -40,6 +40,7 @@ export default function Footer() {
           <h4>Contact</h4>
           <span>aspiremediatechsolution@gmail.com</span>
           <span>+91 9194035877</span>
+          <span>+91 8542950556</span>
           <span>2nd Floor, 203 A, Felix Square, Sushant Golf City, Ansal Api, Nearby lulu mall Lucknow, Uttar Pradesh 226030</span>
           <span>Mon-Sat 9AM-7PM IST</span>
         </div>

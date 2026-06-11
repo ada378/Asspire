@@ -1,9 +1,20 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaGlobe, FaMobileAlt, FaCogs, FaCloud, FaPaintBrush, FaChartLine, FaBolt, FaShieldAlt, FaLayerGroup, FaBullseye, FaCheckCircle, FaHeadphones, FaStar, FaPlay, FaRocket, FaPalette, FaSearchDollar, FaServer, FaWordpress, FaPhp, FaPython } from 'react-icons/fa'
 import { SiNextdotjs, SiDjango, SiSpringboot } from 'react-icons/si'
 import './Home.css'
 
+const API = import.meta.env.VITE_API_URL || '/api'
+
 export default function Home() {
+  const [reviews, setReviews] = useState([])
+
+  useEffect(() => {
+    fetch(API + '/reviews')
+      .then(res => res.json())
+      .then(data => setReviews(data.slice(0, 2)))
+      .catch(() => {})
+  }, [])
   return (
     <>
       {/* Hero */}
@@ -177,21 +188,42 @@ export default function Home() {
             <h2>What Our Clients Say</h2>
             <p>Real feedback from real clients we have worked with</p>
           </div>
-          <div className="testimonial-card-home">
-            <div className="testimonial-stars"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> <span>5.0/5.0</span></div>
-            <p className="testimonial-text">"Aspire Mediatech delivered our web application in 5 weeks — on time, under budget. The code quality and documentation were outstanding. Highly recommended for any web development or digital marketing need!"</p>
-            <div className="testimonial-author">
-              <div className="author-avatar">AS</div>
-              <div><strong>Amit Sharma</strong><span>CEO at TechVenture India</span></div>
-            </div>
-          </div>
-          <div className="testimonial-card-home" style={{ marginTop: 24 }}>
-            <div className="testimonial-stars"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> <span>5.0/5.0</span></div>
-            <p className="testimonial-text">"Their digital marketing strategy doubled our website traffic in just 3 months. The team is professional, responsive, and truly understands how to drive results. Best investment we made for our brand."</p>
-            <div className="testimonial-author">
-              <div className="author-avatar">PK</div>
-              <div><strong>Priya Kapoor</strong><span>Founder at StyleCraft India</span></div>
-            </div>
+          {reviews.length === 0 ? (
+            <>
+              <div className="testimonial-card-home">
+                <div className="testimonial-stars"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> <span>5.0/5.0</span></div>
+                <p className="testimonial-text">"Aspire Mediatech delivered our web application in 5 weeks — on time, under budget. The code quality and documentation were outstanding. Highly recommended for any web development or digital marketing need!"</p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">AS</div>
+                  <div><strong>Amit Sharma</strong><span>CEO at TechVenture India</span></div>
+                </div>
+              </div>
+              <div className="testimonial-card-home" style={{ marginTop: 24 }}>
+                <div className="testimonial-stars"><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> <span>5.0/5.0</span></div>
+                <p className="testimonial-text">"Their digital marketing strategy doubled our website traffic in just 3 months. The team is professional, responsive, and truly understands how to drive results. Best investment we made for our brand."</p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">PK</div>
+                  <div><strong>Priya Kapoor</strong><span>Founder at StyleCraft India</span></div>
+                </div>
+              </div>
+            </>
+          ) : (
+            reviews.map((r, i) => (
+              <div key={r._id} className="testimonial-card-home" style={i > 0 ? { marginTop: 24 } : {}}>
+                <div className="testimonial-stars">
+                  {[...Array(5)].map((_, si) => <FaStar key={si} style={{ opacity: si < r.rating ? 1 : 0.2 }} />)}
+                  <span>{r.rating}.0/5.0</span>
+                </div>
+                <p className="testimonial-text">"{r.text}"</p>
+                <div className="testimonial-author">
+                  <div className="author-avatar">{r.avatar || r.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)}</div>
+                  <div><strong>{r.name}</strong><span>{r.company || ''}{r.company && r.position ? `, ${r.position}` : r.position || ''}</span></div>
+                </div>
+              </div>
+            ))
+          )}
+          <div style={{ textAlign: 'center', marginTop: 40 }}>
+            <Link to="/reviews" className="btn-secondary">View All Reviews →</Link>
           </div>
         </div>
       </section>

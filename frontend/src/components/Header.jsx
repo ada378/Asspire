@@ -64,6 +64,8 @@ export default function Header() {
           </div>
 
           <Link to="/tech-stack" className={`nav-link ${isActive('/tech-stack')}`} onClick={() => setMenuOpen(false)}>Tech Stack</Link>
+          <Link to="/reviews" className={`nav-link ${isActive('/reviews')}`} onClick={() => setMenuOpen(false)}>Reviews</Link>
+          <Link to="/founder" className={`nav-link ${isActive('/founder')}`} onClick={() => setMenuOpen(false)}>Founder</Link>
           <Link to="/contact" className={`nav-link nav-cta ${isActive('/contact')}`} onClick={() => setMenuOpen(false)}>Contact</Link>
         </nav>
       </div>

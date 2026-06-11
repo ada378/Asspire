@@ -38,6 +38,7 @@ export default function Contact() {
             <div className="contact-info-badge">FREE CONSULTATION AVAILABLE</div>
             <div className="contact-info-item"><span className="contact-info-label">Email</span><span>aspiremediatechsolution@gmail.com</span></div>
             <div className="contact-info-item"><span className="contact-info-label">Phone</span><span>+91 9194035877</span></div>
+            <div className="contact-info-item"><span className="contact-info-label">Phone</span><span>+91 8542950556</span></div>
             <div className="contact-info-item"><span className="contact-info-label">WhatsApp</span><span>+91 9194035877</span></div>
             <div className="contact-info-item"><span className="contact-info-label">Address</span><span>2nd Floor, 203 A, Felix Square, Sushant Golf City, Ansal Api, Nearby lulu mall Lucknow, Uttar Pradesh 226030</span></div>
             <div className="contact-info-item"><span className="contact-info-label">Hours</span><span>Mon — Sat: 9AM – 7PM IST</span></div>
